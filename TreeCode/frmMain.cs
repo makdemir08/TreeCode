@@ -88,35 +88,51 @@ namespace TreeCode
 
         private void btnCreateList_Click(object sender, EventArgs e)
         {
-            foreach (TreeNode node in treeView1.Nodes)
-            {
-                string code = $"{TraverseTreeNodes(node, true)}";
-                string description = $"{TraverseTreeNodes(node, false)}";
-                GetTreeView(node.Nodes, code, description);
-
-            }
-
+            GetTreeView(treeView1.Nodes, "", "");
         }
+
+        //private void GetTreeView(TreeNodeCollection nodes, string parentCode, string parentDescription)
+        //{
+        //    foreach (TreeNode node in nodes)
+        //    {
+        //        string code = $"{TraverseTreeNodes(node, true)}";
+        //        string description = $"{TraverseTreeNodes(node, false)}";
+        //        if (node.Nodes.Count == 0)
+        //        {
+        //            tbList.AppendText($"{parentCode}{code};{parentDescription} {description}");
+        //            tbList.AppendText(Environment.NewLine);
+        //        }
+        //        else
+        //        {
+        //            parentCode = $"{parentCode}{code}";
+        //            parentDescription = $"{parentDescription} {description}";
+        //            GetTreeView(node.Nodes, parentCode, parentDescription);
+        //        }
+        //    }
+        //}
 
         private void GetTreeView(TreeNodeCollection nodes, string parentCode, string parentDescription)
         {
             foreach (TreeNode node in nodes)
             {
-                string code = $"{TraverseTreeNodes(node, true)}";
-                string description = $"{TraverseTreeNodes(node, false)}";
+                string code = TraverseTreeNodes(node, true);
+                string description = TraverseTreeNodes(node, false);
+
                 if (node.Nodes.Count == 0)
                 {
-                    tbList.AppendText($"{parentCode}{code};{parentDescription} {description}");
+                    tbList.AppendText($"{parentCode.Trim()}{code.Trim()};{parentDescription.Trim()} {description.Trim()}");
                     tbList.AppendText(Environment.NewLine);
                 }
                 else
                 {
-                    parentCode = $"{parentCode}{TraverseTreeNodes(node, true)}";
-                    parentDescription = $"{parentDescription} {TraverseTreeNodes(node, false)}";
-                    GetTreeView(node.Nodes, parentCode, parentDescription);
+                    string childCode = $"{parentCode}{code}";
+                    string childDescription = $"{parentDescription} {description}";
+
+                    GetTreeView(node.Nodes, childCode, childDescription);
                 }
             }
         }
+
 
         private string TraverseTreeNodes(TreeNode node, bool isCode)
         {
